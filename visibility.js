@@ -1,6 +1,24 @@
-//<input type="time" step="1" min="00:00:00" max="10:00:00">
 //visibilty
 
+import './node_modules/howler/dist/howler.js';
+import './node_modules/howler/dist/howler.core.min.js';
+import './node_modules/howler/dist/howler.min.js';
+import './node_modules/howler/dist/howler.spatial.min.js';
+
+//import { Howl , Howler } from './node_modules/howler/dist/howler.js';
+// Setup the new Howl.
+//import {Howl, Howler} from './node_modules/howler/dist/howler.js';
+
+// Setup the new Howl.
+const sound = new Howl({
+  src: ['sound.webm', 'sound.mp3']
+});
+
+// Play the sound.
+sound.play();
+
+// Change global volume.
+Howler.volume(0.5);
 
 const dataCalc = document.querySelector(".dataCalc");
 const timers = document.querySelector(".timers");
@@ -9,23 +27,23 @@ const currentDate = document.querySelector(".currentDate");
 const timer = document.querySelector(".timer");
 
 dataCalc.addEventListener("click", (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (currentDate.style.visibility == "visible") {
-        currentDate.style.visibility = "hidden";
-    } else {
-        currentDate.style.visibility = "visible";
-    }
+  if (currentDate.style.visibility == "visible") {
+    currentDate.style.visibility = "hidden";
+  } else {
+    currentDate.style.visibility = "visible";
+  }
 });
 
 timers.addEventListener("click", (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (timer.style.visibility == "visible") {
-        timer.style.visibility = "hidden";
-    } else {
-        timer.style.visibility = "visible";
-    }
+  if (timer.style.visibility == "visible") {
+    timer.style.visibility = "hidden";
+  } else {
+    timer.style.visibility = "visible";
+  }
 });
 
 
@@ -37,41 +55,62 @@ const stop = document.querySelector(".stop");
 let pResult = document.querySelector(".result");
 
 form.addEventListener("change", (el) => {
-    el.preventDefault();
+  el.preventDefault();
 
-    const h = el.currentTarget.elements.hours.value;
-    const m = el.currentTarget.elements.minutes.value;
-    const s = el.currentTarget.elements.seconds.value;
-    console.log(h, m, s);
-    let result = (h, m, s);
+  const h = el.currentTarget.elements.hours.value;
+  const m = el.currentTarget.elements.minutes.value;
+  const s = el.currentTarget.elements.seconds.value;
+  let result = (h, m, s);
 
-    pResult.innerHTML = `${Math.trunc(h)}:${Math.trunc(m)}:${s}`;
-    console.log(pResult.innerText);
-    let results = pResult.innerText.toString();
-    //start Time
-    let startTime;
-    start.addEventListener("click", (event) => {
-        event.preventDefault();
-        console.log(results);
 
-        //console.log("start");
-        let t = setInterval(function() {
-            results--;
-            console.log(results);
-        }, 1000);
-});
+  pResult.innerHTML = `${h}:${m}:${s}`;
+  //console.log(pResult.innerText);
+  let resultH = h;
+  let resultM = m;
+  let resultS = s;
+  //start Time
+  let startTime;
+  start.addEventListener("click", (event) => {
+    event.preventDefault();
 
-        //const srartTime = function () {
-       //};
-        //const starts = setInterval(srartTime, 1000);
-        //clearTimeout(timerId);
+    let t = setInterval(function () {
+      if ((resultS) > 0) {
+        resultS--;
+        pResult.innerHTML = `${resultH}:${resultM}:${resultS}`;
+      } else if (resultM > 0) {
+        resultM--;
+        resultS = 60;
+        resultS--;
+        pResult.innerHTML = `${resultH}:${resultM}:${resultS}`;
 
-    //stop Time
+      } else if (resultH > 0 & resultM == 0) {
+        resultH--;
+        resultM = 59;
+        resultS = 60;
+        resultS--;
+        pResult.innerHTML = `${resultH}:${resultM}:${resultS}`;
+      } else {
+        pResult.innerHTML = `<span>Il tempo è finito</span>`;
+        clearTimeout(t);
+        // Setup the new Howl.
+        const sound = new Howl({
+          src: ['sound.webm', 'sound.mp3']
+        });
+
+        // Play the sound.
+        sound.play();
+        sound.duration(2000);
+
+        // Change global volume.
+        Howler.volume(0.5);
+      }
+    }, 1000);
+
     stop.addEventListener("click", (event) => {
-        event.preventDefault();
-        //console.log("stop");
+      event.preventDefault();
+      clearTimeout(t);
 
     });
+  });
+
 });
-
-
