@@ -1,24 +1,7 @@
 //visibilty
 
-import './node_modules/howler/dist/howler.js';
-import './node_modules/howler/dist/howler.core.min.js';
 import './node_modules/howler/dist/howler.min.js';
-import './node_modules/howler/dist/howler.spatial.min.js';
 
-//import { Howl , Howler } from './node_modules/howler/dist/howler.js';
-// Setup the new Howl.
-//import {Howl, Howler} from './node_modules/howler/dist/howler.js';
-
-// Setup the new Howl.
-const sound = new Howl({
-  src: ['sound.webm', 'sound.mp3']
-});
-
-// Play the sound.
-sound.play();
-
-// Change global volume.
-Howler.volume(0.5);
 
 const dataCalc = document.querySelector(".dataCalc");
 const timers = document.querySelector(".timers");
@@ -62,7 +45,6 @@ form.addEventListener("change", (el) => {
   const s = el.currentTarget.elements.seconds.value;
   let result = (h, m, s);
 
-
   pResult.innerHTML = `${h}:${m}:${s}`;
   //console.log(pResult.innerText);
   let resultH = h;
@@ -93,7 +75,7 @@ form.addEventListener("change", (el) => {
         pResult.innerHTML = `<span>Il tempo è finito</span>`;
         clearTimeout(t);
         // Setup the new Howl.
-        const sound = new Howl({
+        /*const sound = new Howl({
           src: ['sound.webm', 'sound.mp3']
         });
 
@@ -102,7 +84,15 @@ form.addEventListener("change", (el) => {
         sound.duration(2000);
 
         // Change global volume.
-        Howler.volume(0.5);
+        Howler.volume(0.5);*/
+        var sound = new Howl({
+          src: ['./suono.mp3'],
+          autoplay: true,
+          volume: 0.5,
+          onend: function() {
+            console.log('Finished!');
+          }
+        });
       }
     }, 1000);
 
